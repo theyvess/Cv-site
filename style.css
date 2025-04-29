@@ -1,0 +1,70 @@
+body {
+    margin: 0;
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1d1d1f;
+    background-color: #fff;
+    line-height: 1.6;
+  }
+  
+  .hero {
+    text-align: center;
+    padding: 5rem 1rem;
+    background: #f2f2f5;
+  }
+  
+  .hero h1 {
+    font-size: 3rem;
+    margin: 0;
+    font-weight: 600;
+  }
+  
+  .hero p {
+    font-size: 1.25rem;
+    color: #666;
+  }
+  
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  section {
+    margin-bottom: 3rem;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+  }
+  
+  h3 {
+    margin: 0.5rem 0;
+    font-size: 1.2rem;
+  }
+  
+  .two-column {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  ul li::before {
+    content: "– ";
+    color: #999;
+  }
+  
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.875rem;
+    color: #aaa;
+  }
+  
