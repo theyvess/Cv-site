@@ -22,6 +22,7 @@ export type SceneKey = (typeof SceneKeys)[keyof typeof SceneKeys];
 export const TextureKeys = {
   Player: 'tex-player',
   Obstacle: 'tex-obstacle',
+  Ground: 'tex-ground',
   Coin: 'tex-coin',
   Spark: 'tex-spark'
 } as const;
@@ -44,36 +45,62 @@ export const Palette = {
 
 /** Gameplay tuning. Kept in one place so balancing never means hunting scenes. */
 export const Tuning = {
-  /** Player is a fixed distance up from the bottom of the play field. */
-  playerY: GAME_HEIGHT - 260,
-  playerRadius: 34,
-  /** Horizontal lerp factor per frame at 60fps; the player chases the pointer. */
-  playerFollowLerp: 0.18,
-  playerEdgePadding: 60,
+  /** Y of the ground surface; the player rests and obstacles slide on this. */
+  groundY: 1010,
+  groundThickness: 8,
 
-  obstacleRadius: 40,
-  obstacleStartSpeed: 380,
-  obstacleMaxSpeed: 900,
-  /** Extra px/s of fall speed added per second survived. */
-  obstacleSpeedRamp: 9,
+  /** The player is a square parked at a fixed x while the world scrolls past. */
+  playerX: 200,
+  playerSize: 84,
+  /** Collision box is shrunk slightly so near-misses read as misses. */
+  playerHitboxScale: 0.86,
 
-  spawnStartDelay: 900,
-  spawnMinDelay: 320,
+  /** Downward acceleration, px/s^2. */
+  gravity: 3200,
+  /** Upward velocity applied on tap, px/s (negative is up). */
+  jumpVelocity: -1180,
+  /** Terminal fall speed so a long drop stays readable. */
+  maxFallSpeed: 1900,
+  /** Fraction of impact speed kept when landing, giving the square its bounce. */
+  groundRestitution: 0.34,
+  /** Below this landing speed the square settles instead of micro-bouncing. */
+  restingSpeedThreshold: 220,
+  /** Ceiling: the square cannot be tapped above this line. */
+  ceilingY: 200,
+
+  /** Obstacles scroll right-to-left; this is the world speed. */
+  scrollStartSpeed: 430,
+  scrollMaxSpeed: 1020,
+  /** Extra px/s of scroll speed added per second survived. */
+  scrollSpeedRamp: 11,
+
+  obstacleMinWidth: 58,
+  obstacleMaxWidth: 104,
+  obstacleMinHeight: 70,
+  obstacleMaxHeight: 172,
+
+  spawnStartDelay: 1150,
+  spawnMinDelay: 430,
   /** ms shaved off the spawn interval per second survived. */
-  spawnDelayRamp: 11,
+  spawnDelayRamp: 12,
 
   coinRadius: 22,
-  coinSpawnChance: 0.35,
+  coinSpawnChance: 0.4,
   coinScore: 5,
+  /** Coins float in this band above the ground, reachable mid-bounce. */
+  coinMinHeight: 170,
+  coinMaxHeight: 430,
 
   /** Points awarded per second survived. */
   survivalScorePerSecond: 10,
+  /** Bonus for each obstacle cleared. */
+  obstacleClearedScore: 25,
 
   /** Grace period after a revive during which collisions are ignored. */
   reviveInvulnerabilityMs: 1800,
 
   poolSize: {
-    obstacles: 24,
+    obstacles: 16,
     coins: 12
   }
 } as const;

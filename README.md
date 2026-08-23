@@ -3,8 +3,8 @@
 A 2D portrait arcade game — Phaser 3 + TypeScript (strict) + Vite, packaged for
 iOS and Android with Capacitor.
 
-Steer a ship with your thumb, dodge falling obstacles, grab coins. Speed and
-spawn rate ramp with time survived.
+Tap to bounce a square over blocks sliding along the ground, grabbing coins
+mid-arc. Scroll speed and spawn rate ramp with time survived.
 
 ## Getting started
 
@@ -45,7 +45,7 @@ src/
   scenes/
     BootScene.ts          Loading bar, procedural textures, service init
     MenuScene.ts          Title, high score, sound toggle, play
-    GameScene.ts          Main loop, pooling, input, collisions, pause
+    GameScene.ts          Main loop, gravity, pooling, collisions, pause
     GameOverScene.ts      Score banking, retry, rewarded revive
   managers/SaveManager.ts Persistent data (high score, coins, settings)
   objects/TextButton.ts   Touch-sized pill button
@@ -60,13 +60,24 @@ src/
 letterboxed with `Phaser.Scale.FIT` + `CENTER_BOTH`. No scene should read
 `window.innerWidth`; use `GAME_WIDTH` / `GAME_HEIGHT` from `config/GameConfig`.
 
-**Input.** Pointer/touch only. No keyboard bindings — a phone has none.
+**Input.** Pointer/touch only — one tap anywhere below the HUD strip applies an
+upward impulse. Taps are allowed mid-air, which keeps the game forgiving on a
+small screen. No keyboard bindings; a phone has none.
+
+**Movement.** The player square holds a fixed x (`Tuning.playerX`) while the
+world scrolls past it. Vertical motion is hand-integrated (semi-implicit Euler)
+against `Tuning.gravity`, with a restitution bounce on landing and a ceiling
+clamp — no physics engine to step or configure.
 
 **Performance.** `update()` allocates nothing. Obstacles and coins come from
 fixed-size `Phaser.GameObjects.Group` pools (`Tuning.poolSize`); an exhausted
-pool skips a spawn rather than growing mid-run. Collisions are squared-distance
-circle tests, so there is no physics engine to step. Placeholder art is drawn
-once at boot into canvas textures so pooled sprites share one texture and batch.
+pool skips a spawn rather than growing mid-run. Collisions are axis-aligned box
+tests (and a closest-point circle test for coins), so nothing is stepped by a
+physics engine. Placeholder art is drawn once at boot into canvas textures;
+obstacles stretch and tint one white block texture so the whole pool draws in a
+single batch, and the floor is a TileSprite scrolled by texture offset rather
+than by moving objects. Landing squash and tilt are direct property writes, not
+a tween per bounce.
 
 **Storage.** All persistence goes through `SaveManager` — never touch
 `localStorage` directly. It feature-detects storage and falls back to an
@@ -81,8 +92,9 @@ mirrored into `SaveManager` so UI can ask a synchronous question.
 
 ## Tuning
 
-Balance lives in `Tuning` in `src/config/GameConfig.ts` — fall speed and its
-ramp, spawn interval and its ramp, pool sizes, scoring, and the post-revive
+Balance lives in `Tuning` in `src/config/GameConfig.ts` — gravity, jump
+impulse, ground restitution, scroll speed and its ramp, spawn interval and its
+ramp, obstacle size range, pool sizes, scoring, and the post-revive
 invulnerability window. Gameplay code reads from there rather than hard-coding
 numbers.
 

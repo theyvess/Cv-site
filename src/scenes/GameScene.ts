@@ -3,8 +3,14 @@ import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH, Palette, SceneKeys, TextureKeys, Tuning } from '../config/GameConfig';
 import { TextButton } from '../objects/TextButton';
 
-/** Top strip reserved for the HUD; taps there never steer the ship. */
+/** Top strip reserved for the HUD; taps there never bounce the player. */
 const HUD_HEIGHT = 170;
+
+/**
+ * Pooled obstacle. `cleared` marks the ones already scored so a single block
+ * cannot award its bonus twice while it finishes scrolling off-screen.
+ */
+type PooledObstacle = Phaser.GameObjects.Image & { cleared?: boolean };
 
 /** Payload used both for a fresh run and for continuing after a revive. */
 export interface GameSceneData {
@@ -17,14 +23,16 @@ export interface GameSceneData {
 }
 
 /**
- * Main loop.
+ * Main loop: a tap-to-bounce square over a scrolling floor of obstacles.
  *
- * Everything that recurs — obstacles, coins, hit sparks — comes out of a pool
- * created in `create()`. `update()` allocates nothing: it moves, recycles and
- * distance-tests objects that already exist.
+ * The player holds a fixed x while the world moves past it. Everything that
+ * recurs — obstacles, coins, sparks — comes out of a pool built in `create()`,
+ * and `update()` allocates nothing: it integrates, recycles and box-tests
+ * objects that already exist.
  */
 export class GameScene extends Phaser.Scene {
   private player!: Phaser.GameObjects.Image;
+  private ground!: Phaser.GameObjects.TileSprite;
   private obstacles!: Phaser.GameObjects.Group;
   private coins!: Phaser.GameObjects.Group;
   private sparks!: Phaser.GameObjects.Particles.ParticleEmitter;
@@ -34,14 +42,18 @@ export class GameScene extends Phaser.Scene {
   private pauseOverlay!: Phaser.GameObjects.Container;
 
   private score = 0;
+  private clearedBonus = 0;
   private coinsCollected = 0;
   private bankedCoins = 0;
   private elapsedMs = 0;
   private spawnTimerMs = 0;
   private spawnDelayMs: number = Tuning.spawnStartDelay;
-  private fallSpeed: number = Tuning.obstacleStartSpeed;
+  private scrollSpeed: number = Tuning.scrollStartSpeed;
 
-  private targetX: number = GAME_WIDTH / 2;
+  /** Vertical state of the player square; x never changes. */
+  private velocityY = 0;
+  private playerY: number = Tuning.groundY - Tuning.playerSize / 2;
+
   private invulnerableUntilMs = 0;
   private isPaused = false;
   private isGameOver = false;
@@ -53,15 +65,19 @@ export class GameScene extends Phaser.Scene {
   init(data: GameSceneData): void {
     // Reset every field: Phaser reuses the scene instance across restarts.
     this.score = data.resumeScore ?? 0;
+    this.clearedBonus = 0;
     this.coinsCollected = data.resumeCoins ?? 0;
     this.bankedCoins = data.bankedCoins ?? 0;
     this.elapsedMs = data.resumeElapsedMs ?? 0;
     this.spawnTimerMs = 0;
     this.spawnDelayMs = this.spawnDelayFor(this.elapsedMs);
-    this.fallSpeed = this.fallSpeedFor(this.elapsedMs);
-    this.targetX = GAME_WIDTH / 2;
+    this.scrollSpeed = this.scrollSpeedFor(this.elapsedMs);
+
+    this.velocityY = 0;
+    this.playerY = Tuning.groundY - Tuning.playerSize / 2;
     this.isPaused = false;
     this.isGameOver = false;
+
     // Invulnerability is measured on the same clock as `elapsedMs`, which a
     // revive carries over from the previous run.
     this.invulnerableUntilMs =
@@ -73,9 +89,10 @@ export class GameScene extends Phaser.Scene {
     this.cameras.main.fadeIn(180, 11, 16, 38);
 
     this.createStarfield();
+    this.createGround();
 
     this.player = this.add
-      .image(GAME_WIDTH / 2, Tuning.playerY, TextureKeys.Player)
+      .image(Tuning.playerX, this.playerY, TextureKeys.Player)
       .setDepth(10);
 
     this.obstacles = this.add.group({
@@ -111,13 +128,14 @@ export class GameScene extends Phaser.Scene {
     }
 
     // A backgrounded WebView can hand back a huge delta on resume; clamping
-    // stops objects from teleporting through the player.
+    // stops the square from tunnelling through the floor or an obstacle.
     const dtMs = Math.min(delta, 50);
     const dt = dtMs / 1000;
 
     this.elapsedMs += dtMs;
-    this.updatePlayer(dtMs);
+    this.updatePlayer(dt);
     this.updateDifficulty();
+    this.updateGround(dt);
     this.updateSpawns(dtMs);
     this.updateObstacles(dt);
     this.updateCoins(dt);
@@ -126,22 +144,45 @@ export class GameScene extends Phaser.Scene {
 
   // --- update steps -------------------------------------------------------
 
-  private updatePlayer(dtMs: number): void {
-    // Frame-rate independent lerp toward the last pointer x.
-    const t = 1 - Math.pow(1 - Tuning.playerFollowLerp, dtMs / (1000 / 60));
-    const nextX = Phaser.Math.Linear(this.player.x, this.targetX, t);
-    this.player.x = Phaser.Math.Clamp(
-      nextX,
-      Tuning.playerEdgePadding,
-      GAME_WIDTH - Tuning.playerEdgePadding
-    );
-    // Bank into the movement for a bit of feel.
-    this.player.setRotation(Phaser.Math.Clamp((this.targetX - this.player.x) / 900, -0.35, 0.35));
+  /** Semi-implicit Euler integration plus ground/ceiling response. */
+  private updatePlayer(dt: number): void {
+    this.velocityY = Math.min(this.velocityY + Tuning.gravity * dt, Tuning.maxFallSpeed);
+    this.playerY += this.velocityY * dt;
+
+    const half = Tuning.playerSize / 2;
+    const floor = Tuning.groundY - half;
+    const ceiling = Tuning.ceilingY + half;
+
+    if (this.playerY >= floor) {
+      this.playerY = floor;
+      if (this.velocityY > Tuning.restingSpeedThreshold) {
+        // Bounce, keeping a fraction of the impact speed.
+        this.velocityY = -this.velocityY * Tuning.groundRestitution;
+        this.squash();
+      } else {
+        this.velocityY = 0;
+      }
+    } else if (this.playerY <= ceiling) {
+      this.playerY = ceiling;
+      this.velocityY = 0;
+    }
+
+    this.player.y = this.playerY;
+    // Tilt with vertical speed, and ease the landing squash back out. Both are
+    // direct property writes — a tween per landing would allocate every bounce.
+    this.player.setRotation(Phaser.Math.Clamp(this.velocityY / 4200, -0.3, 0.3));
+    this.player.scaleX = Phaser.Math.Linear(this.player.scaleX, 1, 0.2);
+    this.player.scaleY = Phaser.Math.Linear(this.player.scaleY, 1, 0.2);
   }
 
   private updateDifficulty(): void {
-    this.fallSpeed = this.fallSpeedFor(this.elapsedMs);
+    this.scrollSpeed = this.scrollSpeedFor(this.elapsedMs);
     this.spawnDelayMs = this.spawnDelayFor(this.elapsedMs);
+  }
+
+  /** The floor is one TileSprite; scrolling it is a texture offset, not motion. */
+  private updateGround(dt: number): void {
+    this.ground.tilePositionX += this.scrollSpeed * dt;
   }
 
   private updateSpawns(dtMs: number): void {
@@ -158,27 +199,34 @@ export class GameScene extends Phaser.Scene {
 
   private updateObstacles(dt: number): void {
     const children = this.obstacles.getChildren();
-    const hitRadius = Tuning.playerRadius * 0.72 + Tuning.obstacleRadius * 0.82;
+    const playerHalf = (Tuning.playerSize * Tuning.playerHitboxScale) / 2;
+    const invulnerable = this.elapsedMs < this.invulnerableUntilMs;
 
     for (let i = 0; i < children.length; i += 1) {
-      const obstacle = children[i] as Phaser.GameObjects.Image;
+      const obstacle = children[i] as PooledObstacle;
       if (!obstacle.active) {
         continue;
       }
 
-      obstacle.y += this.fallSpeed * dt;
-      obstacle.rotation += dt;
+      obstacle.x -= this.scrollSpeed * dt;
+      const halfWidth = obstacle.displayWidth / 2;
 
-      if (obstacle.y - Tuning.obstacleRadius > GAME_HEIGHT) {
+      if (obstacle.x + halfWidth < -20) {
         this.recycle(this.obstacles, obstacle);
         continue;
       }
 
-      if (this.elapsedMs < this.invulnerableUntilMs) {
+      // Cleared once its trailing edge is behind the player's leading edge.
+      if (!obstacle.cleared && obstacle.x + halfWidth < Tuning.playerX - playerHalf) {
+        obstacle.cleared = true;
+        this.clearedBonus += Tuning.obstacleClearedScore;
+      }
+
+      if (invulnerable) {
         continue;
       }
 
-      if (this.isOverlapping(obstacle, hitRadius)) {
+      if (this.overlapsPlayer(obstacle, playerHalf)) {
         this.handleCrash(obstacle);
         return;
       }
@@ -187,7 +235,7 @@ export class GameScene extends Phaser.Scene {
 
   private updateCoins(dt: number): void {
     const children = this.coins.getChildren();
-    const pickupRadius = Tuning.playerRadius + Tuning.coinRadius;
+    const playerHalf = (Tuning.playerSize * Tuning.playerHitboxScale) / 2;
 
     for (let i = 0; i < children.length; i += 1) {
       const coin = children[i] as Phaser.GameObjects.Image;
@@ -195,14 +243,14 @@ export class GameScene extends Phaser.Scene {
         continue;
       }
 
-      coin.y += this.fallSpeed * 0.85 * dt;
+      coin.x -= this.scrollSpeed * dt;
 
-      if (coin.y - Tuning.coinRadius > GAME_HEIGHT) {
+      if (coin.x + Tuning.coinRadius < -20) {
         this.recycle(this.coins, coin);
         continue;
       }
 
-      if (this.isOverlapping(coin, pickupRadius)) {
+      if (this.circleHitsPlayer(coin.x, coin.y, Tuning.coinRadius, playerHalf)) {
         this.collectCoin(coin);
       }
     }
@@ -210,7 +258,7 @@ export class GameScene extends Phaser.Scene {
 
   private updateScore(): void {
     const survival = Math.floor((this.elapsedMs / 1000) * Tuning.survivalScorePerSecond);
-    const next = survival + this.coinsCollected * Tuning.coinScore;
+    const next = survival + this.clearedBonus + this.coinsCollected * Tuning.coinScore;
     if (next !== this.score) {
       this.score = next;
       this.scoreText.setText(String(this.score));
@@ -220,49 +268,77 @@ export class GameScene extends Phaser.Scene {
   // --- pooling ------------------------------------------------------------
 
   private spawnObstacle(): void {
-    const x = Phaser.Math.Between(
-      Tuning.obstacleRadius + 20,
-      GAME_WIDTH - Tuning.obstacleRadius - 20
-    );
-    const obstacle = this.obstacles.get(x, -Tuning.obstacleRadius, TextureKeys.Obstacle) as
-      | Phaser.GameObjects.Image
-      | null;
+    const width = Phaser.Math.Between(Tuning.obstacleMinWidth, Tuning.obstacleMaxWidth);
+    const height = Phaser.Math.Between(Tuning.obstacleMinHeight, Tuning.obstacleMaxHeight);
+    const x = GAME_WIDTH + width;
+    const y = Tuning.groundY - height / 2;
+
+    const obstacle = this.obstacles.get(x, y, TextureKeys.Obstacle) as PooledObstacle | null;
     if (!obstacle) {
-      // Pool exhausted — skipping a spawn is better than growing it mid-run.
+      // Pool exhausted — skipping a spawn beats growing it mid-run.
       return;
     }
+
     obstacle.setTexture(TextureKeys.Obstacle);
-    obstacle.setPosition(x, -Tuning.obstacleRadius);
-    obstacle.setActive(true).setVisible(true).setRotation(0).setScale(1).setAlpha(1);
+    obstacle.setPosition(x, y);
+    obstacle.setDisplaySize(width, height);
+    obstacle.setTint(Palette.obstacle);
+    obstacle.setActive(true).setVisible(true).setAlpha(1);
+    obstacle.cleared = false;
   }
 
   private spawnCoin(): void {
-    const x = Phaser.Math.Between(Tuning.coinRadius + 20, GAME_WIDTH - Tuning.coinRadius - 20);
-    const coin = this.coins.get(x, -Tuning.coinRadius, TextureKeys.Coin) as
-      | Phaser.GameObjects.Image
-      | null;
+    const x = GAME_WIDTH + Tuning.coinRadius;
+    const y = Tuning.groundY - Phaser.Math.Between(Tuning.coinMinHeight, Tuning.coinMaxHeight);
+
+    const coin = this.coins.get(x, y, TextureKeys.Coin) as Phaser.GameObjects.Image | null;
     if (!coin) {
       return;
     }
     coin.setTexture(TextureKeys.Coin);
-    coin.setPosition(x, -Tuning.coinRadius);
+    coin.setPosition(x, y);
     coin.setActive(true).setVisible(true).setScale(1).setAlpha(1);
   }
 
   private recycle(group: Phaser.GameObjects.Group, child: Phaser.GameObjects.Image): void {
     child.setActive(false).setVisible(false);
     // Park it off-screen so a stale position cannot register a hit next spawn.
-    child.setPosition(-200, -200);
+    child.setPosition(-500, -500);
     group.killAndHide(child);
+  }
+
+  // --- collision ----------------------------------------------------------
+
+  /** Axis-aligned box test between the player square and a block. */
+  private overlapsPlayer(obstacle: Phaser.GameObjects.Image, playerHalf: number): boolean {
+    const dx = Math.abs(obstacle.x - Tuning.playerX);
+    const dy = Math.abs(obstacle.y - this.playerY);
+    return (
+      dx < obstacle.displayWidth / 2 + playerHalf && dy < obstacle.displayHeight / 2 + playerHalf
+    );
+  }
+
+  /** Circle vs. the player square, via the closest point on the box. */
+  private circleHitsPlayer(cx: number, cy: number, radius: number, playerHalf: number): boolean {
+    const nearestX = Phaser.Math.Clamp(cx, Tuning.playerX - playerHalf, Tuning.playerX + playerHalf);
+    const nearestY = Phaser.Math.Clamp(cy, this.playerY - playerHalf, this.playerY + playerHalf);
+    const dx = cx - nearestX;
+    const dy = cy - nearestY;
+    return dx * dx + dy * dy <= radius * radius;
   }
 
   // --- interactions -------------------------------------------------------
 
-  /** Circle test against the player; no vectors allocated. */
-  private isOverlapping(target: Phaser.GameObjects.Image, radius: number): boolean {
-    const dx = target.x - this.player.x;
-    const dy = target.y - this.player.y;
-    return dx * dx + dy * dy <= radius * radius;
+  /** Tap handler: an upward impulse, allowed mid-air so the game stays kind. */
+  private bounce(): void {
+    this.velocityY = Tuning.jumpVelocity;
+    this.player.scaleX = 0.86;
+    this.player.scaleY = 1.16;
+  }
+
+  private squash(): void {
+    this.player.scaleX = 1.18;
+    this.player.scaleY = 0.82;
   }
 
   private collectCoin(coin: Phaser.GameObjects.Image): void {
@@ -299,11 +375,11 @@ export class GameScene extends Phaser.Scene {
     return Math.max(Tuning.spawnMinDelay, Tuning.spawnStartDelay - seconds * Tuning.spawnDelayRamp);
   }
 
-  private fallSpeedFor(elapsedMs: number): number {
+  private scrollSpeedFor(elapsedMs: number): number {
     const seconds = elapsedMs / 1000;
     return Math.min(
-      Tuning.obstacleMaxSpeed,
-      Tuning.obstacleStartSpeed + seconds * Tuning.obstacleSpeedRamp
+      Tuning.scrollMaxSpeed,
+      Tuning.scrollStartSpeed + seconds * Tuning.scrollSpeedRamp
     );
   }
 
@@ -313,9 +389,21 @@ export class GameScene extends Phaser.Scene {
     graphics.fillStyle(0xffffff, 0.35);
     for (let i = 0; i < 60; i += 1) {
       const x = Phaser.Math.Between(0, GAME_WIDTH);
-      const y = Phaser.Math.Between(0, GAME_HEIGHT);
+      const y = Phaser.Math.Between(0, Tuning.groundY);
       graphics.fillCircle(x, y, Phaser.Math.Between(1, 3));
     }
+  }
+
+  private createGround(): void {
+    const bandHeight = GAME_HEIGHT - Tuning.groundY;
+    this.ground = this.add
+      .tileSprite(0, Tuning.groundY, GAME_WIDTH, bandHeight, TextureKeys.Ground)
+      .setOrigin(0, 0)
+      .setDepth(-5);
+
+    const surface = this.add.graphics().setDepth(-4);
+    surface.fillStyle(Palette.player, 0.85);
+    surface.fillRect(0, Tuning.groundY - Tuning.groundThickness, GAME_WIDTH, Tuning.groundThickness);
   }
 
   private createHud(): void {
@@ -375,21 +463,14 @@ export class GameScene extends Phaser.Scene {
   }
 
   private bindInput(): void {
-    // Pointer only: drag or tap anywhere to steer. No keyboard bindings, which
-    // would not exist on a phone anyway.
-    const steer = (pointer: Phaser.Input.Pointer): void => {
-      // Ignore the HUD strip so pressing pause does not also yank the ship.
-      if (this.isPaused || pointer.worldY < HUD_HEIGHT) {
+    // Pointer only: tap anywhere in the play field to bounce. No keyboard
+    // bindings, which would not exist on a phone anyway.
+    this.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer: Phaser.Input.Pointer) => {
+      // Ignore the HUD strip so pressing pause does not also launch the player.
+      if (this.isPaused || this.isGameOver || pointer.worldY < HUD_HEIGHT) {
         return;
       }
-      this.targetX = pointer.worldX;
-    };
-
-    this.input.on(Phaser.Input.Events.POINTER_DOWN, steer);
-    this.input.on(Phaser.Input.Events.POINTER_MOVE, (pointer: Phaser.Input.Pointer) => {
-      if (pointer.isDown) {
-        steer(pointer);
-      }
+      this.bounce();
     });
 
     // Pause when the app is backgrounded so a phone call is not a death.

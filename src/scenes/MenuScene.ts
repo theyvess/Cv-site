@@ -27,7 +27,7 @@ export class MenuScene extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.add
-      .text(GAME_WIDTH / 2, 384, 'drag to steer · collect coins', {
+      .text(GAME_WIDTH / 2, 384, 'tap to bounce · clear the blocks', {
         fontFamily: 'Arial, Helvetica, sans-serif',
         fontSize: '30px',
         color: Palette.textMuted

@@ -5,6 +5,9 @@ import { SaveManager } from '../managers/SaveManager';
 import { AdService } from '../services/AdService';
 import { IAPService } from '../services/IAPService';
 
+/** Source size of the stretchable block texture. */
+const BLOCK_TEXTURE_SIZE = 16;
+
 /**
  * Boots the game: draws a loading bar, generates the placeholder art as
  * canvas textures (no binary assets yet, per the prototype guidelines) and
@@ -66,30 +69,54 @@ export class BootScene extends Phaser.Scene {
    */
   private generateTextures(): void {
     this.makePlayerTexture();
-    this.makeCircleTexture(TextureKeys.Obstacle, Tuning.obstacleRadius, Palette.obstacle, 0xffffff);
+    this.makeBlockTexture();
+    this.makeGroundTexture();
     this.makeCircleTexture(TextureKeys.Coin, Tuning.coinRadius, Palette.coin, 0xfff3b0);
     this.makeCircleTexture(TextureKeys.Spark, 8, 0xffffff);
   }
 
-  /** A rounded triangle ship pointing up. */
+  /** The player: a rounded square with a face-like highlight. */
   private makePlayerTexture(): void {
-    const r = Tuning.playerRadius;
-    const size = r * 2;
+    const size = Tuning.playerSize;
     const graphics = this.make.graphics({ x: 0, y: 0 }, false);
 
     graphics.fillStyle(Palette.player, 1);
-    graphics.beginPath();
-    graphics.moveTo(r, 0);
-    graphics.lineTo(size, size);
-    graphics.lineTo(r, size * 0.76);
-    graphics.lineTo(0, size);
-    graphics.closePath();
-    graphics.fillPath();
+    graphics.fillRoundedRect(0, 0, size, size, 18);
 
-    graphics.fillStyle(Palette.playerAccent, 0.9);
-    graphics.fillCircle(r, size * 0.55, r * 0.22);
+    graphics.fillStyle(Palette.playerAccent, 0.92);
+    graphics.fillCircle(size * 0.34, size * 0.38, size * 0.09);
+    graphics.fillCircle(size * 0.66, size * 0.38, size * 0.09);
 
     graphics.generateTexture(TextureKeys.Player, size, size);
+    graphics.destroy();
+  }
+
+  /**
+   * A plain white block. Obstacles vary in size, so this is stretched with
+   * `setDisplaySize` and tinted per spawn rather than being redrawn — one
+   * texture keeps the whole pool in a single draw batch.
+   */
+  private makeBlockTexture(): void {
+    const graphics = this.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0xffffff, 1);
+    graphics.fillRect(0, 0, BLOCK_TEXTURE_SIZE, BLOCK_TEXTURE_SIZE);
+    graphics.generateTexture(TextureKeys.Obstacle, BLOCK_TEXTURE_SIZE, BLOCK_TEXTURE_SIZE);
+    graphics.destroy();
+  }
+
+  /**
+   * One tile of the floor. It is tiled across a TileSprite whose
+   * `tilePositionX` is scrolled, so the ground moves without any per-frame
+   * object churn.
+   */
+  private makeGroundTexture(): void {
+    const size = 64;
+    const graphics = this.make.graphics({ x: 0, y: 0 }, false);
+    graphics.fillStyle(0x121a3a, 1);
+    graphics.fillRect(0, 0, size, size);
+    graphics.fillStyle(0x1f2a54, 1);
+    graphics.fillRect(0, 0, 10, size);
+    graphics.generateTexture(TextureKeys.Ground, size, size);
     graphics.destroy();
   }
 
