@@ -1,0 +1,319 @@
+[
+  {
+    "id": "payday",
+    "sender": "Monzo",
+    "context": "Payment received · 08:02",
+    "prompt": "Salary landed. £1,180 after everything. It looks like a lot right now.",
+    "leftChoice": {
+      "label": "Bank it, go quiet",
+      "effects": { "money": 1180, "sanity": 4, "energy": 2 },
+      "result": "No plans, no spending. Suspiciously peaceful."
+    },
+    "rightChoice": {
+      "label": "Treat yourself first",
+      "effects": { "money": 1075, "sanity": 16 },
+      "result": "Worth every penny for about four days."
+    },
+    "weight": 5,
+    "conditions": { "maxMoney": 1500 }
+  },
+  {
+    "id": "rent_due",
+    "sender": "Marcus Bell",
+    "context": "Landlord · now",
+    "prompt": "Rent's due Friday. Are we good, or am I chasing you again?",
+    "leftChoice": {
+      "label": "Pay it now",
+      "effects": { "money": -520, "sanity": 8 },
+      "result": "Painful. Necessary. Done."
+    },
+    "rightChoice": {
+      "label": "Ask for a week",
+      "effects": { "sanity": -16, "energy": -4 },
+      "result": "He said yes. He also sighed."
+    },
+    "weight": 3
+  },
+  {
+    "id": "brunch_invite",
+    "sender": "Téa",
+    "context": "Group chat · 2 min ago",
+    "prompt": "Bottomless brunch Sunday. Everyone's in. Are you in?",
+    "leftChoice": {
+      "label": "Sit this one out",
+      "effects": { "sanity": -9, "energy": 10 },
+      "result": "You watched the stories. It didn't help."
+    },
+    "rightChoice": {
+      "label": "Say yes",
+      "effects": { "money": -85, "sanity": 15, "energy": -8 },
+      "result": "Three hours, four rounds, zero regrets until Monday."
+    },
+    "weight": 3
+  },
+  {
+    "id": "freelance_gig",
+    "sender": "Ola",
+    "context": "Client · 1h ago",
+    "prompt": "Small logo refresh, quick turnaround, decent money. Can you take it this week?",
+    "leftChoice": {
+      "label": "Pass, you're tired",
+      "effects": { "energy": 8, "sanity": 4 },
+      "result": "Rest is a strategy. Repeat that until you believe it."
+    },
+    "rightChoice": {
+      "label": "Take the job",
+      "effects": { "money": 420, "energy": -22, "sanity": -4 },
+      "result": "Delivered at 1am. Invoice sent at 1:01am."
+    },
+    "weight": 3
+  },
+  {
+    "id": "overtime",
+    "sender": "Rina",
+    "context": "Manager · 18:40",
+    "prompt": "Weekend shift's open. Time and a half. I need an answer tonight.",
+    "leftChoice": {
+      "label": "Protect the weekend",
+      "effects": { "sanity": 12, "energy": 14 },
+      "result": "Two days that belong to you. Rare currency."
+    },
+    "rightChoice": {
+      "label": "Take the shift",
+      "effects": { "money": 260, "energy": -26, "sanity": -10 },
+      "result": "The money's nice. The Monday is not."
+    },
+    "weight": 3
+  },
+  {
+    "id": "energy_bill",
+    "sender": "Utilities",
+    "context": "Direct debit · tomorrow",
+    "prompt": "Winter tariff kicks in tonight. Your bill just went up thirty percent.",
+    "leftChoice": {
+      "label": "Just pay it",
+      "effects": { "money": -120, "sanity": -4 },
+      "result": "Warm flat, thinner account."
+    },
+    "rightChoice": {
+      "label": "Three jumpers instead",
+      "effects": { "money": -55, "sanity": -8, "energy": -6 },
+      "result": "You can see your breath in the hallway."
+    },
+    "weight": 2
+  },
+  {
+    "id": "mum_call",
+    "sender": "Mum",
+    "context": "Missed calls · 2",
+    "prompt": "Two missed calls and a voice note. She just wants to hear your voice.",
+    "leftChoice": {
+      "label": "Call her back",
+      "effects": { "energy": -6, "sanity": 18 },
+      "result": "Forty minutes. You needed it more than she did."
+    },
+    "rightChoice": {
+      "label": "Text her later",
+      "effects": { "sanity": -11 },
+      "result": "The guilt files itself away for Sunday."
+    },
+    "weight": 3
+  },
+  {
+    "id": "crypto_friend",
+    "sender": "Dez",
+    "context": "DMs · now",
+    "prompt": "I'm up forty percent on this coin. Put in £200 and thank me at Christmas.",
+    "leftChoice": {
+      "label": "Absolutely not",
+      "effects": { "sanity": 6 },
+      "result": "He sends a chart. You send a thumbs up."
+    },
+    "rightChoice": {
+      "label": "Send £200",
+      "effects": { "money": -200, "sanity": -8 },
+      "result": "Down twelve percent before you closed the app."
+    },
+    "weight": 2,
+    "conditions": { "minMoney": 200 }
+  },
+  {
+    "id": "sample_sale",
+    "sender": "Studio Aire",
+    "context": "Newsletter · today",
+    "prompt": "Sample sale. The coat you saved in March is sixty percent off. Forty left.",
+    "leftChoice": {
+      "label": "Close the tab",
+      "effects": { "sanity": -7 },
+      "result": "The coat lives on in your camera roll."
+    },
+    "rightChoice": {
+      "label": "Buy the coat",
+      "effects": { "money": -180, "sanity": 19, "energy": -2 },
+      "result": "It fits like it was waiting for you."
+    },
+    "weight": 2,
+    "conditions": { "minMoney": 180 }
+  },
+  {
+    "id": "late_night_delivery",
+    "sender": "Kitchen",
+    "context": "22:47",
+    "prompt": "The fridge has condiments and one lime. Delivery is twenty-two minutes away.",
+    "leftChoice": {
+      "label": "Make do",
+      "effects": { "energy": -9, "sanity": -6 },
+      "result": "Toast. Again. Standing up."
+    },
+    "rightChoice": {
+      "label": "Order in",
+      "effects": { "money": -26, "energy": 9, "sanity": 7 },
+      "result": "Twenty-six pounds of immediate relief."
+    },
+    "weight": 3
+  },
+  {
+    "id": "resell_wardrobe",
+    "sender": "Depop",
+    "context": "Selling · today",
+    "prompt": "Four bags of clothes you haven't touched since 2021. List them?",
+    "leftChoice": {
+      "label": "Not today",
+      "effects": { "energy": 4, "sanity": -3 },
+      "result": "The bags move to the other side of the room."
+    },
+    "rightChoice": {
+      "label": "List everything",
+      "effects": { "money": 145, "energy": -14 },
+      "result": "Nine sales, four hours of photographing, one clear floor."
+    },
+    "weight": 2,
+    "conditions": { "maxMoney": 900 }
+  },
+  {
+    "id": "gym_renewal",
+    "sender": "FitHouse",
+    "context": "Subscription · renews tonight",
+    "prompt": "Your membership renews at midnight. You've been twice this month.",
+    "leftChoice": {
+      "label": "Cancel it",
+      "effects": { "sanity": -5, "energy": -2 },
+      "result": "£45 saved. The version of you that goes at 6am is gone."
+    },
+    "rightChoice": {
+      "label": "This month counts",
+      "effects": { "money": -45, "sanity": 6, "energy": 6 },
+      "result": "You went Tuesday. It was genuinely good."
+    },
+    "weight": 2
+  },
+  {
+    "id": "dentist",
+    "sender": "Bright Dental",
+    "context": "Reminder · overdue",
+    "prompt": "That tooth won't fix itself. £150 now, or a root canal later.",
+    "leftChoice": {
+      "label": "Book it",
+      "effects": { "money": -150, "sanity": 9 },
+      "result": "Twenty uncomfortable minutes, one problem retired."
+    },
+    "rightChoice": {
+      "label": "Ignore it",
+      "effects": { "sanity": -13, "energy": -5 },
+      "result": "It twinges every time you drink anything cold."
+    },
+    "weight": 2,
+    "conditions": { "minWeek": 3 }
+  },
+  {
+    "id": "date_night",
+    "sender": "Amara",
+    "context": "Match · now",
+    "prompt": "Dinner Thursday? Somewhere with tablecloths.",
+    "leftChoice": {
+      "label": "Walk and coffee",
+      "effects": { "money": -12, "sanity": 11 },
+      "result": "Two hours by the canal. Better than tablecloths."
+    },
+    "rightChoice": {
+      "label": "Book the tablecloths",
+      "effects": { "money": -95, "sanity": 17, "energy": -6 },
+      "result": "You split it. She noticed that you offered."
+    },
+    "weight": 2
+  },
+  {
+    "id": "phone_screen",
+    "sender": "Repair Hut",
+    "context": "Quote · today",
+    "prompt": "Screen replacement is £110. Or you live with the crack.",
+    "leftChoice": {
+      "label": "Live with it",
+      "effects": { "sanity": -6 },
+      "result": "A small shard of glass has entered your thumb. Fine."
+    },
+    "rightChoice": {
+      "label": "Fix it",
+      "effects": { "money": -110, "sanity": 10 },
+      "result": "Like new. You keep tilting it to the light."
+    },
+    "weight": 1
+  },
+  {
+    "id": "festival_presale",
+    "sender": "Sola",
+    "context": "Tickets · 24h left",
+    "prompt": "Presale ends tonight. Three of us are going. It's £190.",
+    "leftChoice": {
+      "label": "Skip it",
+      "effects": { "sanity": -14 },
+      "result": "The group chat renames itself without you."
+    },
+    "rightChoice": {
+      "label": "Buy the ticket",
+      "effects": { "money": -190, "sanity": 26, "energy": -4 },
+      "result": "August is sorted. Everything else is a problem for later."
+    },
+    "weight": 2,
+    "once": true,
+    "conditions": { "minMoney": 190, "maxWeek": 5 }
+  },
+  {
+    "id": "tax_bill",
+    "sender": "HMRC",
+    "context": "Self assessment · due",
+    "prompt": "You owe £480 on last year's freelance work. There's a payment plan if you'd rather.",
+    "leftChoice": {
+      "label": "Pay in full",
+      "effects": { "money": -480, "sanity": -5 },
+      "result": "Gone in one hit. At least it's over."
+    },
+    "rightChoice": {
+      "label": "Payment plan",
+      "effects": { "money": -160, "sanity": -13 },
+      "result": "Four more months of a small monthly reminder."
+    },
+    "weight": 2,
+    "once": true,
+    "conditions": { "minWeek": 3 }
+  },
+  {
+    "id": "side_hustle",
+    "sender": "Notes app",
+    "context": "01:14",
+    "prompt": "The candle business idea again. £120 of supplies to find out if it's real.",
+    "leftChoice": {
+      "label": "Go back to sleep",
+      "effects": { "energy": 10, "sanity": -4 },
+      "result": "The note gets a second bullet point. Nothing else."
+    },
+    "rightChoice": {
+      "label": "Buy the supplies",
+      "effects": { "money": -120, "sanity": 14, "energy": -10 },
+      "result": "The flat smells like bergamot. You've never been happier."
+    },
+    "weight": 1,
+    "once": true,
+    "conditions": { "minMoney": 300 }
+  }
+]
