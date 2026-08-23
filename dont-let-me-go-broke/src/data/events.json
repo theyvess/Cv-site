@@ -6,12 +6,12 @@
     "category": "HOUSING",
     "prompt": "Morning! Just a heads up, I'm putting the rent up £80 a month from next week. Market rates, nothing personal. Let me know you're happy and I'll send the new agreement over.",
     "leftChoice": {
-      "text": "Push back and threaten to leave",
-      "effects": { "money": 0, "energy": -15, "sanity": -20, "addFlag": "fought_landlord" }
+      "text": "Push back, threaten to leave",
+      "effects": { "money": 0, "energy": -15, "sanity": -18, "addFlag": "fought_landlord" }
     },
     "rightChoice": {
-      "text": "Accept it. Moving costs more.",
-      "effects": { "money": -80, "energy": -5, "sanity": -10 }
+      "text": "Accept it, moving costs more",
+      "effects": { "money": -80, "energy": -5, "sanity": -12 }
     }
   },
   {
@@ -22,11 +22,131 @@
     "prompt": "The boiler has made a noise you have never heard before and the radiators are stone cold. It is November. An emergency plumber wants £220 to look at it tonight.",
     "leftChoice": {
       "text": "Layer up and ignore it",
-      "effects": { "money": 0, "energy": -20, "sanity": -15, "addFlag": "cold_flat" }
+      "effects": { "money": 0, "energy": -22, "sanity": -15, "addFlag": "cold_flat" }
     },
     "rightChoice": {
       "text": "Call the emergency plumber",
-      "effects": { "money": -220, "energy": 5, "sanity": 10 }
+      "effects": { "money": -220, "energy": 8, "sanity": 14 }
+    }
+  },
+  {
+    "id": "bathroom_mould",
+    "sender": "Your Bathroom",
+    "avatarText": "MO",
+    "category": "HOUSING",
+    "prompt": "There is a new black patch behind the shower and it appears to have a texture now. The letting agent has read your message and not replied for six days.",
+    "leftChoice": {
+      "text": "Chase the agent again",
+      "effects": { "money": 0, "energy": -10, "sanity": -14 }
+    },
+    "rightChoice": {
+      "text": "£9 mould spray and denial",
+      "effects": { "money": -9, "energy": -6, "sanity": -5 }
+    }
+  },
+  {
+    "id": "flatmate_washing_up",
+    "sender": "Flatmate (Josh)",
+    "avatarText": "JO",
+    "category": "HOUSING",
+    "prompt": "Josh has left a lasagne dish 'to soak' since Tuesday. It is now Saturday. The kitchen has started to smell like a warning.",
+    "leftChoice": {
+      "text": "Passive aggressive group chat",
+      "effects": { "money": 0, "energy": -5, "sanity": -12 }
+    },
+    "rightChoice": {
+      "text": "Wash it yourself. Again.",
+      "effects": { "money": 0, "energy": -12, "sanity": -6 }
+    }
+  },
+  {
+    "id": "council_tax_letter",
+    "sender": "The Council",
+    "avatarText": "CT",
+    "category": "HOUSING",
+    "prompt": "FINAL REMINDER. Your council tax instalment is overdue. Pay within 7 days to avoid further recovery action and a £60 summons cost.",
+    "leftChoice": {
+      "text": "Pay it now, get it gone",
+      "effects": { "money": -155, "energy": -5, "sanity": 8 }
+    },
+    "rightChoice": {
+      "text": "Leave it another fortnight",
+      "effects": { "money": 0, "energy": 0, "sanity": -20, "addFlag": "ignored_council" }
+    }
+  },
+  {
+    "id": "noisy_neighbours",
+    "sender": "Flat 4B",
+    "avatarText": "4B",
+    "category": "HOUSING",
+    "prompt": "It is 3:40am and the flat upstairs has discovered drum and bass. You have work in five hours and the ceiling is genuinely vibrating.",
+    "leftChoice": {
+      "text": "Bang on the ceiling",
+      "effects": { "money": 0, "energy": -20, "sanity": -12 }
+    },
+    "rightChoice": {
+      "text": "Earplugs and surrender",
+      "effects": { "money": -4, "energy": -12, "sanity": -6 }
+    }
+  },
+  {
+    "id": "free_sofa_marketplace",
+    "sender": "Marketplace",
+    "avatarText": "MP",
+    "category": "HOUSING",
+    "prompt": "FREE SOFA, collection only, today. It is genuinely nice. It is also on the fourth floor of a building with no lift, in Croydon.",
+    "leftChoice": {
+      "text": "Leave it, you have a beanbag",
+      "effects": { "money": 0, "energy": 0, "sanity": -6 }
+    },
+    "rightChoice": {
+      "text": "Hire a van with a mate",
+      "effects": { "money": -45, "energy": -25, "sanity": 18 }
+    }
+  },
+  {
+    "id": "deep_clean_sunday",
+    "sender": "Sunday",
+    "avatarText": "✨",
+    "category": "HOUSING",
+    "prompt": "The flat has reached the stage where you cannot properly relax in it. You have a free Sunday, a bin bag and a small amount of rage.",
+    "leftChoice": {
+      "text": "Deep clean the whole flat",
+      "effects": { "money": 0, "energy": -18, "sanity": 28 }
+    },
+    "rightChoice": {
+      "text": "Ignore it, watch telly",
+      "effects": { "money": 0, "energy": 12, "sanity": -8 }
+    }
+  },
+  {
+    "id": "tv_licence",
+    "sender": "TV Licensing",
+    "avatarText": "TV",
+    "category": "HOUSING",
+    "prompt": "Our records show this address does not have a TV Licence. Officers may visit. You do own a telly. You mostly use it for Netflix. You are not certain where you stand.",
+    "leftChoice": {
+      "text": "Declare you don't need one",
+      "effects": { "money": 0, "energy": -8, "sanity": -12 }
+    },
+    "rightChoice": {
+      "text": "Just buy the licence",
+      "effects": { "money": -170, "energy": 0, "sanity": 10 }
+    }
+  },
+  {
+    "id": "broadband_outage",
+    "sender": "Openreach",
+    "avatarText": "OR",
+    "category": "HOUSING",
+    "prompt": "Your broadband has been down for three days. The engineer window is 8am to 6pm on Wednesday. You work from home on Wednesdays.",
+    "leftChoice": {
+      "text": "Tether off your phone",
+      "effects": { "money": -25, "energy": -14, "sanity": -12 }
+    },
+    "rightChoice": {
+      "text": "Take the day off and wait",
+      "effects": { "money": 0, "energy": 12, "sanity": -4 }
     }
   },
   {
@@ -37,11 +157,11 @@
     "prompt": "Hey! I know it's Friday but the client deck has to land Monday morning. Could you pick up the weekend? It would be really visible to the leadership team.",
     "leftChoice": {
       "text": "Say no. It's your weekend.",
-      "effects": { "money": 0, "energy": 15, "sanity": 5, "addFlag": "said_no_to_boss" }
+      "effects": { "money": 0, "energy": 18, "sanity": 10, "addFlag": "said_no_to_boss" }
     },
     "rightChoice": {
       "text": "Do it for the 'visibility'",
-      "effects": { "money": 0, "energy": -35, "sanity": -20, "addFlag": "weekend_worked" }
+      "effects": { "money": 0, "energy": -32, "sanity": -20, "addFlag": "weekend_worked" }
     }
   },
   {
@@ -52,27 +172,596 @@
     "prompt": "Hi, got your details from a friend. We need someone to rebuild a small website by the end of the month. Budget is £400. Interested?",
     "leftChoice": {
       "text": "Turn it down, you're stretched",
-      "effects": { "money": 0, "energy": 5, "sanity": 5 }
+      "effects": { "money": 0, "energy": 8, "sanity": 6 }
     },
     "rightChoice": {
       "text": "Take the money",
-      "effects": { "money": 400, "energy": -30, "sanity": -10, "addFlag": "took_side_gig" }
+      "effects": { "money": 400, "energy": -28, "sanity": -10, "addFlag": "took_side_gig" }
     },
     "conditions": { "minEnergy": 25 }
+  },
+  {
+    "id": "payday",
+    "sender": "Payroll",
+    "avatarText": "PA",
+    "category": "WORK",
+    "prompt": "Your salary has landed. For approximately forty minutes you are rich, powerful and untouchable. Then the standing orders start going out.",
+    "leftChoice": {
+      "text": "Straight to the bills",
+      "effects": { "money": 1420, "energy": 0, "sanity": 10 }
+    },
+    "rightChoice": {
+      "text": "Bills, but treat yourself first",
+      "effects": { "money": 1330, "energy": 12, "sanity": 22 }
+    }
+  },
+  {
+    "id": "friday_off",
+    "sender": "Priya (Manager)",
+    "avatarText": "PM",
+    "category": "WORK",
+    "prompt": "You've been flat out for a month. Take Friday off, properly off. Don't check Slack. I mean it, I will be able to see that you checked Slack.",
+    "leftChoice": {
+      "text": "Take it and go feral",
+      "effects": { "money": 0, "energy": 32, "sanity": 26 }
+    },
+    "rightChoice": {
+      "text": "Check Slack anyway",
+      "effects": { "money": 0, "energy": 14, "sanity": -6 }
+    }
+  },
+  {
+    "id": "train_strike",
+    "sender": "Southern Rail",
+    "avatarText": "SR",
+    "category": "WORK",
+    "prompt": "Due to industrial action there is no service from your station. There is a rail replacement bus. It leaves in nine minutes, from somewhere.",
+    "leftChoice": {
+      "text": "Get a taxi, expense it later",
+      "effects": { "money": -38, "energy": -8, "sanity": -6 }
+    },
+    "rightChoice": {
+      "text": "Three buses and a walk",
+      "effects": { "money": -6, "energy": -26, "sanity": -14 }
+    }
+  },
+  {
+    "id": "recruiter_dm",
+    "sender": "Recruiter",
+    "avatarText": "IN",
+    "category": "WORK",
+    "prompt": "Hi! Exciting opportunity, would suit someone with your background. The salary is 'competitive'. It is almost certainly less than you currently earn.",
+    "leftChoice": {
+      "text": "Ignore it, you know the game",
+      "effects": { "money": 0, "energy": 0, "sanity": -4 }
+    },
+    "rightChoice": {
+      "text": "Take the interview anyway",
+      "effects": { "money": 0, "energy": -18, "sanity": 14, "addFlag": "job_hunting" }
+    }
+  },
+  {
+    "id": "office_collection",
+    "sender": "Karen (Facilities)",
+    "avatarText": "KF",
+    "category": "WORK",
+    "prompt": "Collection going round for Malcolm's leaving gift! Suggested £10. You have met Malcolm twice and on one of those occasions he called you Dan.",
+    "leftChoice": {
+      "text": "Say you've got no cash on you",
+      "effects": { "money": 0, "energy": 0, "sanity": -10 }
+    },
+    "rightChoice": {
+      "text": "Chuck a tenner in",
+      "effects": { "money": -10, "energy": 0, "sanity": 6 }
+    }
+  },
+  {
+    "id": "wfh_duvet",
+    "sender": "Your Bed",
+    "avatarText": "ZZ",
+    "category": "WORK",
+    "prompt": "It's a work from home day. Nobody can see you. The camera is off. The duvet is right there and standup is not for another two hours.",
+    "leftChoice": {
+      "text": "Work properly at the desk",
+      "effects": { "money": 0, "energy": -12, "sanity": -4 }
+    },
+    "rightChoice": {
+      "text": "Work from under the duvet",
+      "effects": { "money": 0, "energy": 22, "sanity": 14 }
+    }
+  },
+  {
+    "id": "performance_review",
+    "sender": "Priya (Manager)",
+    "avatarText": "PM",
+    "category": "WORK",
+    "prompt": "Your review is Thursday. You could spend the evening writing up everything you achieved this year, or you could trust that they noticed. They did not notice.",
+    "leftChoice": {
+      "text": "Wing it and hope for the best",
+      "effects": { "money": 0, "energy": 6, "sanity": -16 }
+    },
+    "rightChoice": {
+      "text": "Prep it properly tonight",
+      "effects": { "money": 260, "energy": -20, "sanity": 8 }
+    }
+  },
+  {
+    "id": "leaving_drinks",
+    "sender": "Team Chat",
+    "avatarText": "TC",
+    "category": "WORK",
+    "prompt": "Leaving drinks tonight! It'll be 'just a couple', which historically means getting home at 1am having bought two rounds for people on considerably more money than you.",
+    "leftChoice": {
+      "text": "One drink then slip away",
+      "effects": { "money": -12, "energy": -8, "sanity": 10 }
+    },
+    "rightChoice": {
+      "text": "Stay out, buy a round",
+      "effects": { "money": -55, "energy": -26, "sanity": 18 }
+    }
   },
   {
     "id": "birthday_dinner",
     "sender": "Group Chat (11)",
     "avatarText": "GC",
     "category": "SOCIAL",
-    "prompt": "TASHA'S 30TH!! Booked the tasting menu place for Saturday, it's £65 a head plus drinks, and we're splitting the bill evenly. Everyone in?? 🎉",
+    "prompt": "TASHA'S 30TH!! Booked the tasting menu place for Saturday, it's £65 a head plus drinks, and we're splitting the bill evenly. Everyone in??",
     "leftChoice": {
-      "text": "Make an excuse and stay in",
-      "effects": { "money": 0, "energy": 10, "sanity": -15, "addFlag": "skipped_birthday" }
+      "text": "Make an excuse, stay in",
+      "effects": { "money": 0, "energy": 10, "sanity": -16 }
     },
     "rightChoice": {
       "text": "Split the bill evenly",
-      "effects": { "money": -95, "energy": -15, "sanity": 20 }
+      "effects": { "money": -95, "energy": -15, "sanity": 22 }
     }
+  },
+  {
+    "id": "festival_tickets",
+    "sender": "Ticket App",
+    "avatarText": "TK",
+    "category": "SOCIAL",
+    "prompt": "Presale is live and everyone is going. Tickets are £180, plus a £22 booking fee for the privilege of pressing the button yourself.",
+    "leftChoice": {
+      "text": "Sit this one out",
+      "effects": { "money": 0, "energy": 0, "sanity": -14 }
+    },
+    "rightChoice": {
+      "text": "Buy it. You only live once.",
+      "effects": { "money": -202, "energy": -5, "sanity": 30 }
+    },
+    "conditions": { "minMoney": 250 }
+  },
+  {
+    "id": "quiet_night_in",
+    "sender": "Tonight",
+    "avatarText": "🌙",
+    "category": "SOCIAL",
+    "prompt": "Nobody needs anything from you tonight. There is a blanket, something undemanding on the telly, and absolutely no obligation to be interesting.",
+    "leftChoice": {
+      "text": "Say yes to a last minute pub",
+      "effects": { "money": -28, "energy": -18, "sanity": 12 }
+    },
+    "rightChoice": {
+      "text": "Stay in. Phone on aeroplane.",
+      "effects": { "money": 0, "energy": 28, "sanity": 24 }
+    }
+  },
+  {
+    "id": "hen_do_abroad",
+    "sender": "Bridesmaid Chat",
+    "avatarText": "HD",
+    "category": "SOCIAL",
+    "prompt": "So the hen is in Krakow!! Flights are £120, the apartment is £90 each, and there's a £40 kitty for matching sashes. It's going to be SO fun!!",
+    "leftChoice": {
+      "text": "Admit you can't afford it",
+      "effects": { "money": 0, "energy": 0, "sanity": -22, "addFlag": "skipped_hen" }
+    },
+    "rightChoice": {
+      "text": "Book it and cry later",
+      "effects": { "money": -250, "energy": -20, "sanity": 24 }
+    },
+    "conditions": { "minWeek": 2 }
+  },
+  {
+    "id": "friend_needs_talk",
+    "sender": "Alex",
+    "avatarText": "AL",
+    "category": "SOCIAL",
+    "prompt": "Can I ring you? Everything's a bit much at the minute and you're the only person who doesn't make it weird.",
+    "leftChoice": {
+      "text": "Reply tomorrow. You're spent.",
+      "effects": { "money": 0, "energy": 6, "sanity": -18 }
+    },
+    "rightChoice": {
+      "text": "Answer and listen properly",
+      "effects": { "money": 0, "energy": -12, "sanity": 24 }
+    }
+  },
+  {
+    "id": "dating_app_date",
+    "sender": "Match",
+    "avatarText": "DM",
+    "category": "SOCIAL",
+    "prompt": "They've suggested a cocktail bar in Shoreditch. Their profile says 'entrepreneur'. Every photo is a group shot and you cannot work out which one is them.",
+    "leftChoice": {
+      "text": "Suggest a walk and a coffee",
+      "effects": { "money": -7, "energy": -8, "sanity": 10 }
+    },
+    "rightChoice": {
+      "text": "Cocktails it is",
+      "effects": { "money": -48, "energy": -16, "sanity": 12 }
+    }
+  },
+  {
+    "id": "pub_quiz",
+    "sender": "The Local",
+    "avatarText": "PQ",
+    "category": "SOCIAL",
+    "prompt": "Quiz night, £2 entry, team name unrepeatable. You will lose to the retired couple who have been coming since 1998, but the pints are £4 and nobody is on their phone.",
+    "leftChoice": {
+      "text": "Skip it, save the money",
+      "effects": { "money": 0, "energy": 6, "sanity": -10 }
+    },
+    "rightChoice": {
+      "text": "Go, lose, enjoy it anyway",
+      "effects": { "money": -14, "energy": -8, "sanity": 24 }
+    }
+  },
+  {
+    "id": "wedding_invite",
+    "sender": "Save The Date",
+    "avatarText": "WD",
+    "category": "SOCIAL",
+    "prompt": "You're invited! There's a gift list on which the cheapest remaining item is a £70 gravy boat, and the venue is a three hour drive with a mandatory overnight stay.",
+    "leftChoice": {
+      "text": "Politely decline",
+      "effects": { "money": 0, "energy": 0, "sanity": -16 }
+    },
+    "rightChoice": {
+      "text": "Go. Gravy boat and all.",
+      "effects": { "money": -195, "energy": -26, "sanity": 20 }
+    },
+    "conditions": { "minWeek": 3 }
+  },
+  {
+    "id": "gym_with_mate",
+    "sender": "Sam",
+    "avatarText": "SA",
+    "category": "SOCIAL",
+    "prompt": "Free guest pass at mine, come to a class on Saturday. You have said 'I really need to get back into it' eleven times this month.",
+    "leftChoice": {
+      "text": "Say maybe next week",
+      "effects": { "money": 0, "energy": 0, "sanity": -8 }
+    },
+    "rightChoice": {
+      "text": "Actually go this time",
+      "effects": { "money": 0, "energy": 20, "sanity": 16 }
+    }
+  },
+  {
+    "id": "late_takeaway",
+    "sender": "Delivery App",
+    "avatarText": "🛵",
+    "category": "SOCIAL",
+    "prompt": "It's 9pm, you have had a day, and there is one sad onion in the fridge. The app knows this. The app has already loaded your usual order.",
+    "leftChoice": {
+      "text": "Beans on toast. Again.",
+      "effects": { "money": -2, "energy": 8, "sanity": -10 }
+    },
+    "rightChoice": {
+      "text": "Order the £30 takeaway",
+      "effects": { "money": -30, "energy": 16, "sanity": 14 }
+    }
+  },
+  {
+    "id": "stray_cat",
+    "sender": "Your Doorstep",
+    "avatarText": "🐈",
+    "category": "FAMILY",
+    "prompt": "There is a cat on your step. No collar. It has looked you directly in the eye and walked into your kitchen like it pays half the rent.",
+    "leftChoice": {
+      "text": "Put him back outside",
+      "effects": { "money": 0, "energy": 0, "sanity": -12 }
+    },
+    "rightChoice": {
+      "text": "Feed him. You have a cat now.",
+      "effects": { "money": -85, "energy": -5, "sanity": 24, "addFlag": "has_cat" }
+    },
+    "conditions": { "excludeFlag": "has_cat" }
+  },
+  {
+    "id": "cat_vet_bill",
+    "sender": "The Vet",
+    "avatarText": "🐾",
+    "category": "FAMILY",
+    "prompt": "Mr Bingley needs his jabs, a flea treatment and something the receptionist calls a 'dental assessment'. She says it like it is optional. It is not optional.",
+    "leftChoice": {
+      "text": "Pay the vet in full",
+      "effects": { "money": -145, "energy": -8, "sanity": 10 }
+    },
+    "rightChoice": {
+      "text": "Just the jabs for now",
+      "effects": { "money": -60, "energy": -5, "sanity": -12 }
+    },
+    "conditions": { "requiresFlag": "has_cat", "minWeek": 3 }
+  },
+  {
+    "id": "cat_comfort",
+    "sender": "Mr Bingley",
+    "avatarText": "🐈",
+    "category": "FAMILY",
+    "prompt": "You have had a genuinely horrendous day. The cat has assessed the situation, walked across your laptop and fallen asleep on your chest. You cannot move. You do not want to.",
+    "leftChoice": {
+      "text": "Move him, you've things to do",
+      "effects": { "money": 0, "energy": 6, "sanity": -6 }
+    },
+    "rightChoice": {
+      "text": "Stay exactly where you are",
+      "effects": { "money": 0, "energy": 18, "sanity": 26 }
+    },
+    "conditions": { "requiresFlag": "has_cat" }
+  },
+  {
+    "id": "mum_care_package",
+    "sender": "Mum",
+    "avatarText": "MU",
+    "category": "FAMILY",
+    "prompt": "Sent you a parcel. Nothing exciting, just some bits. (It is four Tupperwares of food, a multipack of crisps, and £20 in a card 'for petrol'.)",
+    "leftChoice": {
+      "text": "Ring and thank her properly",
+      "effects": { "money": 20, "energy": 12, "sanity": 26 }
+    },
+    "rightChoice": {
+      "text": "Text 'thanks mum x', forget",
+      "effects": { "money": 20, "energy": 6, "sanity": 6 }
+    }
+  },
+  {
+    "id": "sunday_roast",
+    "sender": "Dad",
+    "avatarText": "DA",
+    "category": "FAMILY",
+    "prompt": "Roast on Sunday? Your mother's doing beef. You'd have to get the train, but you would come back with leftovers and clean laundry.",
+    "leftChoice": {
+      "text": "Too tired, stay home",
+      "effects": { "money": 0, "energy": 8, "sanity": -12 }
+    },
+    "rightChoice": {
+      "text": "Go home for the weekend",
+      "effects": { "money": -32, "energy": 26, "sanity": 26 }
+    }
+  },
+  {
+    "id": "sibling_loan",
+    "sender": "Little Brother",
+    "avatarText": "BR",
+    "category": "FAMILY",
+    "prompt": "Bro can you lend me £150 til the end of the month, I swear I'll pay you back this time. I've got money coming in, it's just timing innit.",
+    "leftChoice": {
+      "text": "Say no, you're skint too",
+      "effects": { "money": 0, "energy": 0, "sanity": -14 }
+    },
+    "rightChoice": {
+      "text": "Lend it. He's your brother.",
+      "effects": { "money": -150, "energy": 0, "sanity": 10, "addFlag": "lent_to_brother" }
+    }
+  },
+  {
+    "id": "sibling_repays",
+    "sender": "Little Brother",
+    "avatarText": "BR",
+    "category": "FAMILY",
+    "prompt": "Sent you that £150 back, plus a bit extra for being patient about it. Told you I was good for it.",
+    "leftChoice": {
+      "text": "Take it, say nothing",
+      "effects": { "money": 185, "energy": 0, "sanity": 14 }
+    },
+    "rightChoice": {
+      "text": "Tell him to keep the extra",
+      "effects": { "money": 150, "energy": 0, "sanity": 20 }
+    },
+    "conditions": { "requiresFlag": "lent_to_brother" }
+  },
+  {
+    "id": "family_group_chat",
+    "sender": "Family Group",
+    "avatarText": "FG",
+    "category": "FAMILY",
+    "prompt": "Dad has forwarded a video about 5G, Auntie Sue has replied 'amen', and somebody has added your ex to the chat. Nobody is going to address any of it.",
+    "leftChoice": {
+      "text": "Mute the chat for a week",
+      "effects": { "money": 0, "energy": 6, "sanity": 12 }
+    },
+    "rightChoice": {
+      "text": "Try to correct the 5G thing",
+      "effects": { "money": 0, "energy": -14, "sanity": -18 }
+    }
+  },
+  {
+    "id": "nan_birthday",
+    "sender": "Nan",
+    "avatarText": "NA",
+    "category": "FAMILY",
+    "prompt": "It's Nan's 80th. She says 'don't get me anything, I don't need anything'. She will absolutely notice if you get her nothing.",
+    "leftChoice": {
+      "text": "A card and a long phone call",
+      "effects": { "money": -4, "energy": -6, "sanity": 14 }
+    },
+    "rightChoice": {
+      "text": "Flowers, cake, the works",
+      "effects": { "money": -55, "energy": -12, "sanity": 24 }
+    }
+  },
+  {
+    "id": "parents_worried",
+    "sender": "Mum",
+    "avatarText": "MU",
+    "category": "FAMILY",
+    "prompt": "Your dad and I were just saying we haven't heard from you in a bit. Is everything alright with money? We can help, you know. We really don't mind.",
+    "leftChoice": {
+      "text": "Say you're fine. You're fine.",
+      "effects": { "money": 0, "energy": 0, "sanity": -16 }
+    },
+    "rightChoice": {
+      "text": "Admit you're struggling",
+      "effects": { "money": 220, "energy": 8, "sanity": 28, "addFlag": "told_parents" }
+    },
+    "conditions": { "maxSanity": 65, "excludeFlag": "told_parents" }
+  },
+  {
+    "id": "loan_offer",
+    "sender": "QuickCash",
+    "avatarText": "QC",
+    "category": "FINANCE",
+    "prompt": "APPROVED IN 3 MINUTES. £300 in your account today, no credit check, flexible repayment terms. Representative APR 1,299%. Tap to accept.",
+    "leftChoice": {
+      "text": "Absolutely not",
+      "effects": { "money": 0, "energy": -6, "sanity": -12 }
+    },
+    "rightChoice": {
+      "text": "Take it. Deal with it later.",
+      "effects": { "money": 300, "energy": 0, "sanity": 12, "addFlag": "took_loan" }
+    },
+    "conditions": { "maxMoney": 250, "excludeFlag": "took_loan" }
+  },
+  {
+    "id": "loan_reminder",
+    "sender": "QuickCash",
+    "avatarText": "QC",
+    "category": "FINANCE",
+    "prompt": "Friendly reminder that your repayment of £395 is now due. That is not a typo. You borrowed £300 nine days ago.",
+    "leftChoice": {
+      "text": "Ignore it. You can't pay.",
+      "effects": { "money": 0, "energy": -12, "sanity": -22, "addFlag": "loan_ignored" }
+    },
+    "rightChoice": {
+      "text": "Pay it off and never again",
+      "effects": { "money": -395, "energy": -5, "sanity": 18, "addFlag": "loan_settled" }
+    },
+    "conditions": { "requiresFlag": "took_loan", "excludeFlag": "loan_settled" }
+  },
+  {
+    "id": "debt_collector",
+    "sender": "Your Front Door",
+    "avatarText": "DC",
+    "category": "FINANCE",
+    "prompt": "There is a man in a fleece at the door with a clipboard and your full legal name. He is being extremely polite about it, which is somehow worse.",
+    "leftChoice": {
+      "text": "Don't answer. Sit very still.",
+      "effects": { "money": 0, "energy": -22, "sanity": -32, "addFlag": "collector_dealt" }
+    },
+    "rightChoice": {
+      "text": "Answer and agree a plan",
+      "effects": { "money": -480, "energy": -10, "sanity": 10, "addFlag": "collector_dealt" }
+    },
+    "conditions": { "requiresFlag": "loan_ignored", "excludeFlag": "collector_dealt" }
+  },
+  {
+    "id": "tax_refund",
+    "sender": "HMRC",
+    "avatarText": "HM",
+    "category": "FINANCE",
+    "prompt": "You have overpaid tax in the previous year. A repayment of £340 is being issued to your account. This is the single nicest email you will receive all year.",
+    "leftChoice": {
+      "text": "Straight into savings",
+      "effects": { "money": 340, "energy": 0, "sanity": 16 }
+    },
+    "rightChoice": {
+      "text": "You deserve something nice",
+      "effects": { "money": 255, "energy": 14, "sanity": 24 }
+    },
+    "conditions": { "minWeek": 2 }
+  },
+  {
+    "id": "subscription_audit",
+    "sender": "Banking App",
+    "avatarText": "BA",
+    "category": "FINANCE",
+    "prompt": "You are paying for four streaming services, a meditation app you have opened twice, and a gym you have not physically entered since February.",
+    "leftChoice": {
+      "text": "Cancel the lot",
+      "effects": { "money": 48, "energy": 0, "sanity": 20 }
+    },
+    "rightChoice": {
+      "text": "Keep them, you'll use them",
+      "effects": { "money": -48, "energy": 0, "sanity": -12 }
+    }
+  },
+  {
+    "id": "vinted_sale",
+    "sender": "Vinted",
+    "avatarText": "VI",
+    "category": "FINANCE",
+    "prompt": "Someone has offered £6 for a coat that cost you £70. There are also eleven other things in your wardrobe you have not worn since 2022.",
+    "leftChoice": {
+      "text": "Reject it, it's worth more",
+      "effects": { "money": 0, "energy": -5, "sanity": -6 }
+    },
+    "rightChoice": {
+      "text": "Sell the lot, clear the space",
+      "effects": { "money": 110, "energy": -16, "sanity": 16 }
+    }
+  },
+  {
+    "id": "overdraft_letter",
+    "sender": "Your Bank",
+    "avatarText": "OD",
+    "category": "FINANCE",
+    "prompt": "You have entered your arranged overdraft. Interest is charged at 39.9% EAR variable. We are contacting you because we care, and also because it is profitable.",
+    "leftChoice": {
+      "text": "Look away from the app",
+      "effects": { "money": 0, "energy": 0, "sanity": -20 }
+    },
+    "rightChoice": {
+      "text": "Sit down and budget properly",
+      "effects": { "money": -35, "energy": -16, "sanity": 22, "addFlag": "budgeting" }
+    },
+    "conditions": { "maxMoney": 200, "excludeFlag": "has_savings" }
+  },
+  {
+    "id": "phone_upgrade",
+    "sender": "Your Network",
+    "avatarText": "NW",
+    "category": "FINANCE",
+    "prompt": "You're eligible for an upgrade! The new one has a marginally better camera and costs £14 more a month for twenty four months. Your current phone works perfectly.",
+    "leftChoice": {
+      "text": "Keep the phone you have",
+      "effects": { "money": 0, "energy": 0, "sanity": -6 }
+    },
+    "rightChoice": {
+      "text": "Upgrade. The camera though.",
+      "effects": { "money": -120, "energy": 6, "sanity": 18 }
+    }
+  },
+  {
+    "id": "energy_bill",
+    "sender": "British Gas",
+    "avatarText": "BG",
+    "category": "FINANCE",
+    "prompt": "Your monthly direct debit is increasing to £96 to cover projected usage. You have been showering at the gym specifically to avoid this happening.",
+    "leftChoice": {
+      "text": "Challenge the estimate",
+      "effects": { "money": -55, "energy": -16, "sanity": -8 }
+    },
+    "rightChoice": {
+      "text": "Accept it, put a jumper on",
+      "effects": { "money": -96, "energy": -8, "sanity": -8 }
+    }
+  },
+  {
+    "id": "emergency_fund",
+    "sender": "Savings Pot",
+    "avatarText": "SP",
+    "category": "FINANCE",
+    "prompt": "You have actual spare money for the first time in months. You could move £120 somewhere you cannot easily touch it, or you could simply not do that.",
+    "leftChoice": {
+      "text": "Leave it in the current account",
+      "effects": { "money": 0, "energy": 0, "sanity": -8 }
+    },
+    "rightChoice": {
+      "text": "Lock it away in savings",
+      "effects": { "money": -120, "energy": 0, "sanity": 26, "addFlag": "has_savings" }
+    },
+    "conditions": { "minMoney": 600 }
   }
 ]
