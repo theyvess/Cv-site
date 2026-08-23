@@ -155,9 +155,12 @@ export class StateEngine {
    *
    * Checked in that order, so a turn that trips more than one reports money
    * first. Safe to call at any time; returns `isGameOver: false` while alive.
+   *
+   * `weeksSurvived` is the raw week counter, so a run that ends in week 1 reads
+   * "survived 1 week" rather than 0.
    */
   checkGameOver(): GameOverState {
-    const weeksSurvived = Math.max(0, this.stats.week - 1)
+    const weeksSurvived = this.stats.week
 
     if (this.stats.money <= BANKRUPTCY_THRESHOLD) {
       return {

@@ -1,0 +1,78 @@
+[
+  {
+    "id": "landlord_rent_hike",
+    "sender": "Dave (Landlord)",
+    "avatarText": "DL",
+    "category": "HOUSING",
+    "prompt": "Morning! Just a heads up, I'm putting the rent up £80 a month from next week. Market rates, nothing personal. Let me know you're happy and I'll send the new agreement over.",
+    "leftChoice": {
+      "text": "Push back and threaten to leave",
+      "effects": { "money": 0, "energy": -15, "sanity": -20, "addFlag": "fought_landlord" }
+    },
+    "rightChoice": {
+      "text": "Accept it. Moving costs more.",
+      "effects": { "money": -80, "energy": -5, "sanity": -10 }
+    }
+  },
+  {
+    "id": "boiler_dies",
+    "sender": "Your Flat",
+    "avatarText": "🔧",
+    "category": "HOUSING",
+    "prompt": "The boiler has made a noise you have never heard before and the radiators are stone cold. It is November. An emergency plumber wants £220 to look at it tonight.",
+    "leftChoice": {
+      "text": "Layer up and ignore it",
+      "effects": { "money": 0, "energy": -20, "sanity": -15, "addFlag": "cold_flat" }
+    },
+    "rightChoice": {
+      "text": "Call the emergency plumber",
+      "effects": { "money": -220, "energy": 5, "sanity": 10 }
+    }
+  },
+  {
+    "id": "unpaid_overtime",
+    "sender": "Priya (Manager)",
+    "avatarText": "PM",
+    "category": "WORK",
+    "prompt": "Hey! I know it's Friday but the client deck has to land Monday morning. Could you pick up the weekend? It would be really visible to the leadership team.",
+    "leftChoice": {
+      "text": "Say no. It's your weekend.",
+      "effects": { "money": 0, "energy": 15, "sanity": 5, "addFlag": "said_no_to_boss" }
+    },
+    "rightChoice": {
+      "text": "Do it for the 'visibility'",
+      "effects": { "money": 0, "energy": -35, "sanity": -20, "addFlag": "weekend_worked" }
+    }
+  },
+  {
+    "id": "freelance_gig",
+    "sender": "Unknown Number",
+    "avatarText": "??",
+    "category": "WORK",
+    "prompt": "Hi, got your details from a friend. We need someone to rebuild a small website by the end of the month. Budget is £400. Interested?",
+    "leftChoice": {
+      "text": "Turn it down, you're stretched",
+      "effects": { "money": 0, "energy": 5, "sanity": 5 }
+    },
+    "rightChoice": {
+      "text": "Take the money",
+      "effects": { "money": 400, "energy": -30, "sanity": -10, "addFlag": "took_side_gig" }
+    },
+    "conditions": { "minEnergy": 25 }
+  },
+  {
+    "id": "birthday_dinner",
+    "sender": "Group Chat (11)",
+    "avatarText": "GC",
+    "category": "SOCIAL",
+    "prompt": "TASHA'S 30TH!! Booked the tasting menu place for Saturday, it's £65 a head plus drinks, and we're splitting the bill evenly. Everyone in?? 🎉",
+    "leftChoice": {
+      "text": "Make an excuse and stay in",
+      "effects": { "money": 0, "energy": 10, "sanity": -15, "addFlag": "skipped_birthday" }
+    },
+    "rightChoice": {
+      "text": "Split the bill evenly",
+      "effects": { "money": -95, "energy": -15, "sanity": 20 }
+    }
+  }
+]

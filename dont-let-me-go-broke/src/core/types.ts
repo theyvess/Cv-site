@@ -90,7 +90,7 @@ export interface GameOverState {
   cause: GameOverCause | null
   /** Player-facing cause of death; empty string while the run is alive. */
   message: string
-  /** Fully completed weeks. A run that ends in week 1 survived 0. */
+  /** The week the run reached. A run ending in week 1 survived 1 week. */
   weeksSurvived: number
 }
 
