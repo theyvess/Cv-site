@@ -1,0 +1,26 @@
+{
+  "name": "sky-dodge",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A 2D portrait mobile arcade game built with Phaser 3, TypeScript and Capacitor.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "sync": "npm run build && cap sync"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/app": "^6.0.1",
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/ios": "^6.1.2",
+    "phaser": "^3.86.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  }
+}

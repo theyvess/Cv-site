@@ -1,0 +1,20 @@
+node_modules/
+dist/
+dist-ssr/
+*.local
+.DS_Store
+
+# Capacitor native projects are generated with `npx cap add ios|android`
+ios/App/App/public/
+ios/App/Pods/
+android/app/src/main/assets/public/
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+
+*.log
+npm-debug.log*
+.vscode/*
+!.vscode/extensions.json
+.idea/
