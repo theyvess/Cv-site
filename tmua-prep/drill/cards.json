@@ -1,0 +1,17 @@
+[
+  {"front": "Discriminant of ax^2+bx+c, and what each sign means", "back": "b^2-4ac. >0 two real roots, =0 one repeated root, <0 none real", "box": 1, "due": "2020-01-01"},
+  {"front": "sin^2 x + cos^2 x = ?", "back": "1", "box": 1, "due": "2020-01-01"},
+  {"front": "Exact value of sin 60, cos 60, tan 60", "back": "sqrt(3)/2, 1/2, sqrt(3)", "box": 1, "due": "2020-01-01"},
+  {"front": "log_a(x) + log_a(y) = ?", "back": "log_a(xy)", "box": 1, "due": "2020-01-01"},
+  {"front": "Change of base formula", "back": "log_a(x) = log_b(x) / log_b(a)", "box": 1, "due": "2020-01-01"},
+  {"front": "Sum of first n terms of an arithmetic series", "back": "n/2 * (2a + (n-1)d), or n/2 * (first + last)", "box": 1, "due": "2020-01-01"},
+  {"front": "Sum to infinity of a geometric series, and when it exists", "back": "a/(1-r), valid only for |r| < 1", "box": 1, "due": "2020-01-01"},
+  {"front": "Contrapositive of P => Q. Is it equivalent?", "back": "not-Q => not-P. Yes, always equivalent", "box": 1, "due": "2020-01-01"},
+  {"front": "Converse of P => Q. Is it equivalent?", "back": "Q => P. No — never assume it", "box": 1, "due": "2020-01-01"},
+  {"front": "Negation of 'P implies Q'", "back": "P AND not-Q. (Not 'P implies not-Q' — the classic trap)", "box": 1, "due": "2020-01-01"},
+  {"front": "Negation of 'for all x, P(x)'", "back": "there exists x such that not P(x)", "box": 1, "due": "2020-01-01"},
+  {"front": "If P => Q, which is necessary and which is sufficient?", "back": "P is sufficient for Q; Q is necessary for P", "box": 1, "due": "2020-01-01"},
+  {"front": "Equation of a circle, centre (a,b) radius r", "back": "(x-a)^2 + (y-b)^2 = r^2", "box": 1, "due": "2020-01-01"},
+  {"front": "d/dx of a^x", "back": "a^x ln(a)", "box": 1, "due": "2020-01-01"},
+  {"front": "Integral of 1/x dx", "back": "ln|x| + c — the modulus matters", "box": 1, "due": "2020-01-01"}
+]
